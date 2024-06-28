@@ -1,6 +1,7 @@
 package com.sebas.accompermibt
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +16,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,6 +25,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -37,7 +41,22 @@ class MainActivity : ComponentActivity() {
                 val multiplePermissionsState = rememberMultiplePermissionsState(
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) versionSDK31 else versionSDK30
                 )
-                    Sample(multiplePermissionsState)
+            if(multiplePermissionsState.allPermissionsGranted) {
+                // If all permissions are granted, then show screen with the feature enabled
+                Text("Bluetooth and Scan  permissions Granted! Thank you!")
+            } else {
+
+            Log.i("Sample","launchMultiplePermissionRequest")
+
+                LaunchedEffect(Unit) {
+                    multiplePermissionsState.launchMultiplePermissionRequest()
+                }
+
+            if( multiplePermissionsState.shouldShowRationale) {
+
+            }
+
+
 
             }
         }
@@ -45,24 +64,18 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPermissionsApi::class)
     @Composable
     private fun Sample(multiplePermissionsState: MultiplePermissionsState) {
-        if (multiplePermissionsState.allPermissionsGranted) {
-            // If all permissions are granted, then show screen with the feature enabled
-            Text("Bluetooth and Scan  permissions Granted! Thank you!")
-        } else {
-            Column {
+
                 Text(
                     getTextToShowGivenPermissions(
                         multiplePermissionsState.revokedPermissions,
                         multiplePermissionsState.shouldShowRationale
                     )
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = { multiplePermissionsState.launchMultiplePermissionRequest() }) {
-                    Text("Request permissions")
-                }
+
+
             }
         }
-    }
+
 
 
     @OptIn(ExperimentalPermissionsApi::class)
