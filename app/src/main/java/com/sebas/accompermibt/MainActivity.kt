@@ -22,7 +22,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.sebas.accompermibt.ui.theme.AccomPermiBTTheme
+
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPermissionsApi::class)
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AccomPermiBTTheme {
+
 
                 val versionSDK30 = listOf(android.Manifest.permission.BLUETOOTH, android.Manifest.permission.BLUETOOTH_ADMIN)
                 val versionSDK31 = listOf(android.Manifest.permission.BLUETOOTH_CONNECT, android.Manifest.permission.BLUETOOTH_SCAN)
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) versionSDK31 else versionSDK30
                 )
                     Sample(multiplePermissionsState)
-                }
+
             }
         }
     }
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
     private fun Sample(multiplePermissionsState: MultiplePermissionsState) {
         if (multiplePermissionsState.allPermissionsGranted) {
             // If all permissions are granted, then show screen with the feature enabled
-            Text("Camera and Read storage permissions Granted! Thank you!")
+            Text("Bluetooth and Scan  permissions Granted! Thank you!")
         } else {
             Column {
                 Text(
